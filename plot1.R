@@ -1,4 +1,6 @@
 #title plot1
+#subtitle plot 2
+
 
 #Loading packages
 install.packages("ggplot2")
