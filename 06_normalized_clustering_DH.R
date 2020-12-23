@@ -8,10 +8,9 @@ library("reshape2")
 library(dplyr)
 
 oefening
-iam = Sepsis_data_normalized_outliers_out
+iam = IAM_control_Olink_check
 
-iam = melt(iam, id.vars = c("ID", "Batch", "Sex", "Age", "Diagnosis", "In_Hospital_Mortality",
-                        "ICU_admission", "severity_groups", "Diag_cat_number", "CCI", "Gram_stain", "SOFA_score", "WBC", "CRP"),
+iam = melt(iam, id.vars = c("ID"),
          variable.name = "assay", value.name = "npx")
 
 
