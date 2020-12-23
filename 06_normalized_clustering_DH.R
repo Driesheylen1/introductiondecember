@@ -7,7 +7,7 @@ library("readxl")
 library("reshape2")
 library(dplyr)
 
-
+oefening
 iam = Sepsis_data_normalized_outliers_out
 
 iam = melt(iam, id.vars = c("ID", "Batch", "Sex", "Age", "Diagnosis", "In_Hospital_Mortality",
