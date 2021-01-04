@@ -46,7 +46,7 @@ x_matr = as.matrix(t)
 x_dist_L2 = dist(x_mat, method = "euclidean")# compute distances between samples, needed for clustering
 x_dist_L2r = dist(x_matr, method = "euclidean")  # compute distances between samples, needed for clustering
 
-x_dist_L1 = dist(x_mat, method = "manhattan")  # compute distances between samples, needed for clustering
+x_dist_L1 = dist(x_mat, method = "euclidean")  # compute distances between samples, needed for clustering
 
 
 #dim(as.matrix(x_dist_L1))
@@ -65,7 +65,7 @@ for (i in 1:length(clust_methods)) {
    clust_list_L2[[clust_methods[i]]] = hclust(x_dist_L2, method = clust_methods[i])
 }
 
-x_clust = hclust(x_dist_L2)
+x_clust = hclust(x_dist_L1)
 x_clustr = hclust(x_dist_L2r, method = 'ward.D')
 
 
@@ -74,7 +74,7 @@ class(clust_list_L1[[1]])
 
 #x_clust
 #summary(x_clust)
-plot(x_clust) #use toch check matrix
+plot(x_clustr) #use toch check matrix
 
 # Look at using pheatmap (or aheatmap)
 
@@ -86,9 +86,7 @@ library(pheatmap)
 
 # pheatmap(mat = as.matrix(x_dist), show_colnames = FALSE) simplified no options code
 
-my_annot = data.frame(gender = x$Sex, Batch = x$Batch,
-                      age = x$Age, Comorbidities = x$CCI, GRAM_stain = x$Gram_stain, Diagnosis = x$Diagnosis,
-                      person = x$ID, SOFA = x$SOFA_score, Severity_group = x$severity_groups) 
+my_annot = data.frame() 
 #dim(my_annot)
 #rownames(my_annot) <- colnames(x[10:101])
 #head(my_annot)
@@ -126,10 +124,11 @@ my_colors[['Severity_group']] = c('1'='#F6F6F6', '2'='#170606')
 #colnames(mat) = colnames(t) #was this important or not? 
 # now use hclust results, rather than pheatmap default, which is k-means
 
-pheatmap(mat = as.matrix(x_dist_L2),
-         fontsize = 6,
+pheatmap(mat = as.matrix(x_dist_L1),
+         fontsize = 3,
          cluster_cols = x_clust,
          cluster_rows = x_clustr,
+         labels_row = rownames(x_matr),
          main = "Hierarchical clustering (complete)")
 
 # to files:
