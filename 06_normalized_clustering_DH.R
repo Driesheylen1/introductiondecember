@@ -7,7 +7,7 @@ library("readxl")
 library("reshape2")
 library(dplyr)
 
-oefening
+#adapted for OLINK control bridge check-up plot
 iam = IAM_control_Olink_check
 
 iam = melt(iam, id.vars = c("ID"),
@@ -15,14 +15,14 @@ iam = melt(iam, id.vars = c("ID"),
 
 
 iam = as.data.table(iam)
-
+iam$npx = as.numeric(iam$npx)
+View(is.na(iam$npx))
 ### Standardize the data
 # Note that value_n is the result of batch normalization
 iam[, value_ns := scale(npx), by = assay]  # scale (mean zero, sd 1) #important to set as dataframe
 
 
-x = as.data.frame(dcast.data.table(iam, ID + Batch + Sex + Age + Diagnosis + ICU_admission + severity_groups
-                                   + In_Hospital_Mortality + CCI + Gram_stain + SOFA_score ~ assay, 
+x = as.data.frame(dcast.data.table(iam, ID ~ assay, 
                                    value.var = "value_ns"))
 
 
@@ -32,10 +32,10 @@ x = as.data.frame(dcast.data.table(iam, ID + Batch + Sex + Age + Diagnosis + ICU
 #x2 = x[-1,] # x 12 times; as first twelve lines (controls) as well as line 393 do not contain metadata
 # remove first twelve lines
 
-x2 <- x[ -c(1:11) ]
-x_mat = as.matrix(x2)
+x_mat = as.matrix(x)
+x_mat = x_mat[,-(1)] 
 row.names(x_mat) = as.character((x$ID))  #difficulty because of duplicate bridge samples rownames reason for weir rows
-t = t(x2)
+t = t(x)
 t = t[-1,]
 
 colnames(t) = x$ID
@@ -56,7 +56,7 @@ x_dist_L1 = dist(x_mat, method = "manhattan")  # compute distances between sampl
 
 
 clust_methods = c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")
-kmea
+
 clust_list_L1 = list()
 clust_list_L2 = list()
 
@@ -74,7 +74,7 @@ class(clust_list_L1[[1]])
 
 #x_clust
 #summary(x_clust)
-plot(x_clustr) #use toch check matrix
+plot(x_clust) #use toch check matrix
 
 # Look at using pheatmap (or aheatmap)
 
@@ -127,11 +127,9 @@ my_colors[['Severity_group']] = c('1'='#F6F6F6', '2'='#170606')
 # now use hclust results, rather than pheatmap default, which is k-means
 
 pheatmap(mat = as.matrix(x_dist_L2),
-         annotation_col = my_annot,
          fontsize = 6,
          cluster_cols = x_clust,
          cluster_rows = x_clustr,
-         annotation_colors = my_colors,
          main = "Hierarchical clustering (complete)")
 
 # to files:
