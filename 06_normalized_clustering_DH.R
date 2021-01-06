@@ -162,17 +162,18 @@ for (i in 1:length(clust_methods)) {
    flush.console()
    
    pheatmap(mat = as.matrix(x_dist_L2),
-            show_colnames = F,
+            show_colnames = TRUE,
             show_rownames = TRUE,
             labels_row = rownames(t),
             annotation_col = my_annot,
-            fontsize = 5,
+            labels_col = colnames(t),
+            fontsize = 2,
             cluster_cols = clust_list_L2[[i]],
             cluster_rows = x_clustr,
             annotation_colors = my_colors,
             main = paste("Hierarchical clustering (L2, ", clust_methods[i], ")", sep = ""),
             filename = fnL2,
-            width = 8.3,
+            width = 12.3,
             height = 11.7)
    flush.console()
    while (!is.null(dev.list()))  dev.off()
