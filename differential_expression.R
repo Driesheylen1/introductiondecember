@@ -11,7 +11,7 @@ library(writexl)
 
 
 
-iam = randomizing2
+iam = Sepsis_data_normalized_outliers_out
 #not needed this
 #iam = melt(iam, id.vars = c("ID", "Batch", "Sex", "Age", "Diagnosis", "In_Hospital_Mortality",
                             "ICU_admission", "severity_groups", "Diag_cat_number", "CCI", "Gram_stain", "SOFA_score", "WBC", "CRP",
