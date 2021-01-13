@@ -9,9 +9,9 @@ library(dplyr)
 install.packages("writexl")
 library(writexl)
 
+write
 
-
-iam = Sepsis_data_normalized_outliers_out
+iam = randomizing2
 #not needed this
 #iam = melt(iam, id.vars = c("ID", "Batch", "Sex", "Age", "Diagnosis", "In_Hospital_Mortality",
                             "ICU_admission", "severity_groups", "Diag_cat_number", "CCI", "Gram_stain", "SOFA_score", "WBC", "CRP",
@@ -30,7 +30,7 @@ sepsis_favourable <- subset(iam, severity_groups %in% names(tt[tt = 2])) #to get
 sepsis_unfavourable <- sepsis_unfavourable[ -c(1:14) ]
 sepsis_favourable <- sepsis_favourable[ -c(1:14) ]
 
-protein_expression <- as.data.frame(mapply(t.test, sepsis_favourable, sepsis_unfavourable))
+protein_expression <- as.data.frame(mapply(t.test, sepsis_favourable, sepsis_unfavourable)) #mapply crucial for taking all variants
 protein_expression = unlist(protein_expression)
 protein_expression = as.data.frame(protein_expression)
 rownames = rownames(protein_expression)
