@@ -9,28 +9,27 @@ library(dplyr)
 install.packages("writexl")
 library(writexl)
 
-write
+iam = Sepsis_anov_grouping
 
-iam = randomizing2
 #not needed this
 #iam = melt(iam, id.vars = c("ID", "Batch", "Sex", "Age", "Diagnosis", "In_Hospital_Mortality",
                             "ICU_admission", "severity_groups", "Diag_cat_number", "CCI", "Gram_stain", "SOFA_score", "WBC", "CRP",
           # variable.name = "assay", value.name = "npx")
 
 
-tt = table(iam$severity_groups)
+tt = table(iam$Anova_groups)
 
 
 
-sepsis_unfavourable <- subset(iam, severity_groups %in% names(tt[tt = 1])) #to get only unfavourable outcome
-sepsis_favourable <- subset(iam, severity_groups %in% names(tt[tt = 2])) #to get only favourable outcome
+sepsis_influenza <- subset(iam, Anova_groups %in% names(tt[tt = 1])) #to get only unfavourable outcome, Numbers refer to table row 
+sepsis_bacterial <- subset(iam, Anova_groups %in% names(tt[tt = 2])) #to get only favourable outcome
 #t.test(sepsis_favourable$`CSF-1`, sepsis_unfavourable$IL8, var.equal = FALSE)
        
 #cleaning data       
-sepsis_unfavourable <- sepsis_unfavourable[ -c(1:14) ]
-sepsis_favourable <- sepsis_favourable[ -c(1:14) ]
+sepsis_influenza <- sepsis_influenza[ -c(1:2) ]
+sepsis_bacterial <- sepsis_bacterial[ -c(1:2) ]
 
-protein_expression <- as.data.frame(mapply(t.test, sepsis_favourable, sepsis_unfavourable)) #mapply crucial for taking all variants
+protein_expression <- as.data.frame(mapply(t.test, sepsis_influenza, sepsis_bacterial)) #mapply crucial for taking all variants
 protein_expression = unlist(protein_expression)
 protein_expression = as.data.frame(protein_expression)
 rownames = rownames(protein_expression)
