@@ -22,10 +22,10 @@ tt = table(iam$Anova_groups)
 
 
 sepsis_influenza <- subset(iam, Anova_groups %in% names(tt[tt = 1])) #to get only unfavourable outcome, Numbers refer to table row 
-sepsis_bacterial <- subset(iam, Anova_groups %in% names(tt[tt = 2])) #to get only favourable outcome
+sepsis_bacterial <- subset(iam, Anova_groups %in% names(tt[tt = 3])) #to get only favourable outcome
 #t.test(sepsis_favourable$`CSF-1`, sepsis_unfavourable$IL8, var.equal = FALSE)
        
-#cleaning data       
+#cleaning data     p  
 sepsis_influenza <- sepsis_influenza[ -c(1:2) ]
 sepsis_bacterial <- sepsis_bacterial[ -c(1:2) ]
 
@@ -34,5 +34,5 @@ protein_expression = unlist(protein_expression)
 protein_expression = as.data.frame(protein_expression)
 rownames = rownames(protein_expression)
 protein_expression = cbind(rownames, protein_expression)
-write_xlsx(x = protein_expression, "C:/Users/HEYLEND/Desktop/introductiondecember/differential_expressionrandom_severity_size2.xlsx",
+write_xlsx(x = protein_expression, "C:/Users/HEYLEND/Desktop/introductiondecember/differential_expressioninfluenza_Bacterial3.xlsx",
             use_zip64 = T)
