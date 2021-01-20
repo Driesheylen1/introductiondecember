@@ -9,7 +9,7 @@ library(dplyr)
 install.packages("writexl")
 library(writexl)
 
-iam = Sepsis_anov_grouping
+iam = Sepsis_data_supervised_influenza_normalized_outliers_out
 
 #not needed this
 #iam = melt(iam, id.vars = c("ID", "Batch", "Sex", "Age", "Diagnosis", "In_Hospital_Mortality",
@@ -17,22 +17,22 @@ iam = Sepsis_anov_grouping
           # variable.name = "assay", value.name = "npx")
 
 
-tt = table(iam$Anova_groups)
+tt = table(iam$Diagnosis)
 
 
 
-sepsis_influenza <- subset(iam, Anova_groups %in% names(tt[tt = 1])) #to get only unfavourable outcome, Numbers refer to table row 
-sepsis_bacterial <- subset(iam, Anova_groups %in% names(tt[tt = 3])) #to get only favourable outcome
+sepsis_influenza <- subset(iam, Diagnosis %in% names(tt[tt = 2])) #to get only unfavourable outcome, Numbers refer to table row 
+sepsis_non_influenza <- subset(iam, Diagnosis %in% names(tt[tt = 1])) #to get only favourable outcome
 #t.test(sepsis_favourable$`CSF-1`, sepsis_unfavourable$IL8, var.equal = FALSE)
        
 #cleaning data     p  
 sepsis_influenza <- sepsis_influenza[ -c(1:2) ]
-sepsis_bacterial <- sepsis_bacterial[ -c(1:2) ]
+sepsis_non_influenza <- sepsis_non_influenza[ -c(1:2) ]
 
-protein_expression <- as.data.frame(mapply(t.test, sepsis_influenza, sepsis_bacterial)) #mapply crucial for taking all variants
+protein_expression <- as.data.frame(mapply(t.test, sepsis_influenza, sepsis_non_influenza)) #mapply crucial for taking all variants
 protein_expression = unlist(protein_expression)
 protein_expression = as.data.frame(protein_expression)
 rownames = rownames(protein_expression)
 protein_expression = cbind(rownames, protein_expression)
-write_xlsx(x = protein_expression, "C:/Users/HEYLEND/Desktop/introductiondecember/differential_expressioninfluenza_Bacterial3.xlsx",
+write_xlsx(x = protein_expression, "C:/Users/HEYLEND/Desktop/introductiondecember/differential_expressioninfluenza_supervised.xlsx",
             use_zip64 = T)
