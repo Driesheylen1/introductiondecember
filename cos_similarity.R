@@ -1,6 +1,5 @@
 library(lsa)
 install.packages("lsa")
-library(lsa)
 library(ggplot2)
 
 
@@ -12,7 +11,8 @@ library(ggplot2)
 #t = as.data.frame(t)
 
 #Het dataframe in kwestie is een 'reshape2::melt' van de output van cosine()
-cos_sim = as.matrix(scatterplots_input_test)
+cos_sim = scatterplots_input_test
+cos_sim = as.matrix(cos_sim)
 cos_sim = cosine(cos_sim)
 cos_orig_melt = reshape2::melt(cos_sim)
 
